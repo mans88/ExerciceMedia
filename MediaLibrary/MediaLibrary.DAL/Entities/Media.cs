@@ -1,24 +1,36 @@
-﻿using MediaLibrary.DAL.Enumeration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
 namespace MediaLibrary.DAL.Entities
 {
-    public class Media
+    using MediaLibrary.DAL.Enumerations;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    public partial class Media
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Media()
         {
-            this.Categories = new HashSet<Category>();
+            CATEGORY = new HashSet<Category>();
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public string Path { get; set; }
-        public MediaType Type { get; set; }
-        public virtual ICollection<Category> Categories { get; set; }
-        public bool Done { get; set; }
+        public int id { get; set; }
+
+        [StringLength(42)]
+        public string name { get; set; }
+
+        [StringLength(42)]
+        public string url { get; set; }
+
+        [StringLength(42)]
+        public string path { get; set; }
+
+        public MediaType type { get; set; }
+
+        public bool? done { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Category> CATEGORY { get; set; }
     }
 }

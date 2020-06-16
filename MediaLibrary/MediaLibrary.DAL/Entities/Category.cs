@@ -1,16 +1,26 @@
-﻿using System.Collections.Generic;
-
 namespace MediaLibrary.DAL.Entities
 {
-    public class Category
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    [Table("CATEGORY")]
+    public partial class Category
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.Medias = new HashSet<Media>();
+            MEDIA = new HashSet<Media>();
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<Media> Medias { get; set; }
+        public int id { get; set; }
+
+        [StringLength(42)]
+        public string name { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Media> MEDIA { get; set; }
     }
 }
