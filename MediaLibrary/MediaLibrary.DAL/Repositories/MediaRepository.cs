@@ -1,4 +1,5 @@
 ﻿using MediaLibrary.DAL.Entities;
+using MediaLibrary.DAL.Enumerations;
 using MediaLibrary.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,31 @@ namespace MediaLibrary.DAL.Repositories
 
         public ICollection<Media> GetAll()
         {
-            throw new NotImplementedException();
+            List<Media> medias = new List<Media>();
+
+            SqlCommand cmd = new SqlCommand("sp_GetAll_Medias", connection);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var media = new Media
+                {
+                    id = Convert.ToInt32(reader["id"]),
+                    name = reader["name"].ToString(),
+                    url = reader["url"].ToString(),
+                    path = reader["path"].ToString(),
+                    type = (MediaType)Enum.Parse(typeof(MediaType), reader["type"].ToString()),
+                    done = Convert.ToBoolean(reader["done"]),
+                };
+                medias.Add(media);
+            }
+            connection.Close();
+
+            return medias;
         }
 
         public Media GetById(int id)

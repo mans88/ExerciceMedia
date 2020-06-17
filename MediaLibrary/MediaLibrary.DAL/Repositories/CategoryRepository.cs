@@ -23,7 +23,27 @@ namespace MediaLibrary.DAL.Repositories
 
         public ICollection<Category> GetAll()
         {
-            throw new NotImplementedException();
+            List<Category> categories = new List<Category>();
+
+            SqlCommand cmd = new SqlCommand("sp_GetAll_Categories", connection);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var category = new Category
+                {
+                    id = Convert.ToInt32(reader["id"]),
+                    name = reader["name"].ToString(),
+                };
+                categories.Add(category);
+            }
+            connection.Close();
+
+            return categories;
         }
 
         public Category GetById(int id)
