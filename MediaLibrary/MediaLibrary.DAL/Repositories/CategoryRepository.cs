@@ -18,7 +18,14 @@ namespace MediaLibrary.DAL.Repositories
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            SqlCommand cmd = new SqlCommand("sp_Delete_Category", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+            cmd.Parameters.AddWithValue("@id", id);
+            var result = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            return result > 0;
         }
 
         public ICollection<Category> GetAll()
@@ -48,7 +55,23 @@ namespace MediaLibrary.DAL.Repositories
 
         public Category GetById(int id)
         {
-            throw new NotImplementedException();
+            Category category = new Category();
+
+            SqlCommand cmd = new SqlCommand("sp_GetById_Category", connection);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                category.id = Convert.ToInt32(reader["id"]);
+                category.name = reader["name"].ToString();
+            }
+            connection.Close();
+
+            return category;
         }
 
         public Category Insert(Category category)

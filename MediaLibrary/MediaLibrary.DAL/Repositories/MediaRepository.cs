@@ -19,7 +19,14 @@ namespace MediaLibrary.DAL.Repositories
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            SqlCommand cmd = new SqlCommand("sp_Delete_Media", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+            cmd.Parameters.AddWithValue("@id", id);
+            var result = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            return result > 0;
         }
 
         public ICollection<Media> GetAll()
@@ -53,7 +60,27 @@ namespace MediaLibrary.DAL.Repositories
 
         public Media GetById(int id)
         {
-            throw new NotImplementedException();
+            Media media = new Media();
+
+            SqlCommand cmd = new SqlCommand("sp_GetById_Category", connection);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                media.id = Convert.ToInt32(reader["id"]);
+                media.name = reader["name"].ToString();
+                media.url = reader["url"].ToString();
+                media.path = reader["path"].ToString();
+                media.type = (MediaType)Enum.Parse(typeof(MediaType), reader["type"].ToString());
+                media.done = Convert.ToBoolean(reader["done"]);
+            }
+            connection.Close();
+
+            return media;
         }
 
         public Media Insert(Media entity)
