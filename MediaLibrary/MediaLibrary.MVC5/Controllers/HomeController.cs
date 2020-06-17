@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +9,11 @@ namespace MediaLibrary.MVC5.Controllers
 {
     public class HomeController : Controller
     {
+        //private MediaRepository mediaRepository;
+        //public HomeController(IMediaRepository repository)
+        //{
+        //    mediaRepository = new MediaRepository(new SqlConnection("connectionstring"));
+        //}
         public ActionResult Index()
         {
             return View();
